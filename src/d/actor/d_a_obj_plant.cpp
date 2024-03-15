@@ -4,16 +4,29 @@
 //
 
 #include "d/actor/d_a_obj_plant.h"
+#include "JSystem/J3DGraphAnimator/J3DModel.h"
+#include "JSystem/JUtility/JUTAssert.h"
+#include "d/d_resorce.h"
 #include "m_Do/m_Do_ext.h"
 
 /* 00000078-00000098       .text CheckCreateHeap__FP10fopAc_ac_c */
-static BOOL CheckCreateHeap(fopAc_ac_c*) {
-    /* Nonmatching */
+static BOOL CheckCreateHeap(fopAc_ac_c* p_this) {
+    return ((daObjPlant_c*)p_this)->CreateHeap();
 }
 
 /* 00000098-000001E0       .text CreateHeap__12daObjPlant_cFv */
-void daObjPlant_c::CreateHeap() {
-    /* Nonmatching */
+BOOL daObjPlant_c::CreateHeap() {
+    J3DModelData* modelData = (J3DModelData*)dComIfG_getObjectRes("Plant", 3);
+
+    JUT_ASSERT(0xAA, modelData != 0);
+
+    mpModel = mDoExt_J3DModel__create(modelData, 0, 0x11020203);
+
+    if (mpModel == NULL) {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 /* 000001E0-000002AC       .text CreateInit__12daObjPlant_cFv */
@@ -52,6 +65,6 @@ static BOOL daObjPlant_Execute(void*) {
 }
 
 /* 00000A58-00000A60       .text daObjPlant_IsDelete__FPv */
-static BOOL daObjPlant_IsDelete(void*) {
-    /* Nonmatching */
+static BOOL daObjPlant_IsDelete(void* p_this) {
+    return TRUE;
 }

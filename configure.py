@@ -1568,7 +1568,7 @@ config.libs = [
     ActorRel(Matching,    "d_a_obj_paper", extra_cflags=['-pragma "nosyminline on"']),
     ActorRel(Matching,    "d_a_obj_pbka"),
     ActorRel(NonMatching, "d_a_obj_pfall"),
-    ActorRel(NonMatching, "d_a_obj_plant"),
+    ActorRel(Matching, "d_a_obj_plant"),
     ActorRel(NonMatching, "d_a_obj_rflw"),
     ActorRel(NonMatching, "d_a_obj_rforce"),
     ActorRel(NonMatching, "d_a_obj_smplbg"),
