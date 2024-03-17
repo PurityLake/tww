@@ -62,8 +62,9 @@ static s32 daObjPlant_Create(void*) {
 }
 
 /* 000006FC-0000072C       .text daObjPlant_Delete__FPv */
-static BOOL daObjPlant_Delete(void*) {
-    /* Nonmatching */
+static BOOL daObjPlant_Delete(void* p_this) {
+    dComIfG_resDelete(&((daObjPlant_c*)p_this)->mPhs, "Plant");
+    return TRUE;
 }
 
 /* 0000072C-00000814       .text daObjPlant_Draw__FPv */
