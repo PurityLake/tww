@@ -9,6 +9,8 @@
 #include "d/d_resorce.h"
 #include "m_Do/m_Do_ext.h"
 
+static BOOL nodeCallBack(J3DNode*, int);
+
 /* 00000078-00000098       .text CheckCreateHeap__FP10fopAc_ac_c */
 static BOOL CheckCreateHeap(fopAc_ac_c* p_this) {
     return ((daObjPlant_c*)p_this)->CreateHeap();
@@ -21,10 +23,20 @@ BOOL daObjPlant_c::CreateHeap() {
     JUT_ASSERT(0xAA, modelData != 0);
 
     mpModel = mDoExt_J3DModel__create(modelData, 0, 0x11020203);
-
     if (mpModel == NULL) {
         return FALSE;
     }
+
+    JUTNameTab* pNameTab = mpModel->mModelData->getJointName();
+    for (int i = 0; i < mpModel->mModelData->getJointNum(); i++) {
+        const char* name = pNameTab->getName(i);
+        if (strcmp("joint2", name) == 0) {
+            mpModel->mModelData->getJointNodePointer(i)->mCallBack = nodeCallBack;
+            break;
+        }
+    }
+
+    mpModel->mModelData->setHierarchy((J3DModelHierarchy*)this);
 
     return TRUE;
 }
