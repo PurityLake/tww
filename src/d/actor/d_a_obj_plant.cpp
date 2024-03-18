@@ -5,9 +5,42 @@
 
 #include "d/actor/d_a_obj_plant.h"
 #include "JSystem/J3DGraphAnimator/J3DModel.h"
+#include "JSystem/J3DGraphBase/J3DSys.h"
 #include "JSystem/JUtility/JUTAssert.h"
-#include "d/d_resorce.h"
+#include "d/d_procname.h"
 #include "m_Do/m_Do_ext.h"
+
+static dCcD_SrcCyl l_cyl_src = {
+    // dCcD_SrcGObjInf
+    {
+        /* Flags             */ 0,
+        /* SrcObjAt  Type    */ 0,
+        /* SrcObjAt  Atp     */ 0,
+        /* SrcObjAt  SPrm    */ 0,
+        /* SrcObjTg  Type    */ AT_TYPE_ALL,
+        /* SrcObjTg  SPrm    */ TG_SPRM_SET,
+        /* SrcObjCo  SPrm    */ CO_SPRM_SET | CO_SPRM_IS_UNK8 | CO_SPRM_VS_UNK2,
+        /* SrcGObjAt Se      */ 0,
+        /* SrcGObjAt HitMark */ 0,
+        /* SrcGObjAt Spl     */ 0,
+        /* SrcGObjAt Mtrl    */ 0,
+        /* SrcGObjAt SPrm    */ 0,
+        /* SrcGObjTg Se      */ 0,
+        /* SrcGObjTg HitMark */ 0,
+        /* SrcGObjTg Spl     */ 0,
+        /* SrcGObjTg Mtrl    */ 0,
+        /* SrcGObjTg SPrm    */ G_TG_SPRM_NO_HIT_MARK,
+        /* SrcGObjCo SPrm    */ 0,
+    },
+    // cM3dGCylS
+    {
+        /* Center */ 0.0f,
+        0.0f,
+        0.0f,
+        /* Radius */ 10.0f,
+        /* Height */ 80.0f,
+    },
+};
 
 static BOOL nodeCallBack(J3DNode*, int);
 
@@ -77,7 +110,7 @@ void daObjPlant_c::set_mtx() {
 
 /* 00000410-00000544       .text daObjPlant_Create__FPv */
 static s32 daObjPlant_Create(void*) {
-    /* Nonmatching */
+    return 0;
 }
 
 /* 000006FC-0000072C       .text daObjPlant_Delete__FPv */
@@ -88,15 +121,38 @@ static BOOL daObjPlant_Delete(void* p_this) {
 
 /* 0000072C-00000814       .text daObjPlant_Draw__FPv */
 static BOOL daObjPlant_Draw(void*) {
-    /* Nonmatching */
+    return TRUE;
 }
 
 /* 00000814-00000A58       .text daObjPlant_Execute__FPv */
 static BOOL daObjPlant_Execute(void*) {
-    /* Nonmatching */
+    return TRUE;
 }
 
 /* 00000A58-00000A60       .text daObjPlant_IsDelete__FPv */
 static BOOL daObjPlant_IsDelete(void* p_this) {
     return TRUE;
 }
+
+static actor_method_class daObj_PlantMethodTable = {
+    (process_method_func)daObjPlant_Create,  (process_method_func)daObjPlant_Delete,
+    (process_method_func)daObjPlant_Execute, (process_method_func)daObjPlant_IsDelete,
+    (process_method_func)daObjPlant_Draw,
+};
+
+actor_process_profile_definition g_profile_Obj_Plant = {
+    /* LayerID      */ fpcLy_CURRENT_e,
+    /* ListID       */ 3,
+    /* ListPrio     */ fpcPi_CURRENT_e,
+    /* ProcName     */ PROC_Obj_Plant,
+    /* Proc SubMtd  */ &g_fpcLf_Method.base,
+    /* Size         */ sizeof(daObjPlant_c),
+    /* SizeOther    */ 0,
+    /* Parameters   */ 0,
+    /* Leaf SubMtd  */ &g_fopAc_Method.base,
+    /* Priority     */ 0x01BE,
+    /* Actor SubMtd */ &daObj_PlantMethodTable,
+    /* Status       */ fopAcStts_UNK40000_e | fopAcStts_NOCULLEXEC_e,
+    /* Group        */ fopAc_ACTOR_e,
+    /* CullType     */ fopAc_CULLBOX_4_e,
+};
