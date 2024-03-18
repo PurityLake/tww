@@ -18,12 +18,8 @@ public:
 
 public:
     /* Place member variables here */
-    request_of_phase_process_class mPhs;
-    J3DModel* mpModel;
-    dBgW* mpBgW;
-    Mtx mMtx;
-    u8 field_0x2d0;
-    u8 m2D0[0x2D4 - 0x2D1];
+    /* 0x290 */ request_of_phase_process_class mPhs;
+    /* 0x298 */ J3DModel* mpModel;
 };
 
 #endif /* D_A_OBJ_PLANT_H */
