@@ -47,8 +47,23 @@ void daObjPlant_c::CreateInit() {
 }
 
 /* 000002AC-00000390       .text nodeCallBack__FP7J3DNodei */
-static BOOL nodeCallBack(J3DNode*, int) {
-    /* Nonmatching */
+static BOOL nodeCallBack(J3DNode* node, int param_1) {
+    if (!param_1) {
+        J3DJoint* joint = (J3DJoint*)node;
+        s32 jntNo = joint->getJntNo();
+        J3DModel* model = j3dSys.getModel();
+        daObjPlant_c* p_this = (daObjPlant_c*)model->getUserArea();
+        if (p_this) {
+            cMtx_copy(model->getAnmMtx(jntNo), *calc_mtx);
+            // TODO: Incorrect index for angle: meant to be  0x408 but has 0x206
+            mDoMtx_XrotM(*calc_mtx, p_this->current.angle.x);
+            mDoMtx_YrotM(*calc_mtx, p_this->current.angle.y);
+            mDoMtx_XrotM(*calc_mtx, -p_this->current.angle.x);
+            model->setAnmMtx(jntNo, *calc_mtx);
+            cMtx_copy(*calc_mtx, J3DSys::mCurrentMtx);
+        }
+    }
+    return TRUE;
 }
 
 /* 00000390-00000410       .text set_mtx__12daObjPlant_cFv */
