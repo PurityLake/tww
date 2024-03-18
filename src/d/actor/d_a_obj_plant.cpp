@@ -42,7 +42,12 @@ BOOL daObjPlant_c::CreateHeap() {
 
 /* 000001E0-000002AC       .text CreateInit__12daObjPlant_cFv */
 void daObjPlant_c::CreateInit() {
-    /* Nonmatching */
+    // this->cullMtx = this->mpModel->mModelData->getJointTree().getBasicMtxCalc();
+    fopAcM_setCullSizeBox((fopAc_ac_c*)this, -600.0, -0.0, -600.0, 600.0, 900.0, 600.0);
+    cullSizeFar = 0x3f800000;
+    mStts.Init(0xff, 0xff, this);
+    mCyl.Set(l_cyl_src);
+    set_mtx();
 }
 
 /* 000002AC-00000390       .text nodeCallBack__FP7J3DNodei */
